@@ -27,7 +27,7 @@ export default function AboutArt() {
             </div>
 
             <h2 className="mt-4 text-4xl font-semibold md:text-5xl">
-              YLLKA BYTYCI
+              The Art of Lighting
             </h2>
 
             <p className="mt-4 text-white/70">
