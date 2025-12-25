@@ -2,6 +2,11 @@ import Hero from "@/components/sections/Hero";
 import AboutArt from "@/components/sections/AboutArt";
 import WhyUs from "@/components/sections/WhyUs";
 import Collections from "@/components/sections/Collections";
+import { supabase } from "@/utils/supabase/client";
+
+
+console.log("Supabase ready:", !!supabase);
+
 
 
 export default function HomePage() {
