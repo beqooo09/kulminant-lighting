@@ -1,6 +1,8 @@
 import Hero from "@/components/sections/Hero";
 import AboutArt from "@/components/sections/AboutArt";
 import WhyUs from "@/components/sections/WhyUs";
+import Collections from "@/components/sections/Collections";
+
 
 export default function HomePage() {
   return (
@@ -8,6 +10,7 @@ export default function HomePage() {
       <Hero />
       <AboutArt />
       <WhyUs />
+      <Collections />
 
       <section id="contact" className="mx-auto max-w-6xl px-6 py-16">
         <h2 className="text-3xl font-bold">Contact</h2>
