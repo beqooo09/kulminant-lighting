@@ -9,8 +9,8 @@ export default function AboutArt() {
   ];
 
   return (
-    <section id="about" className="bg-neutral-900 text-white">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2">
+    <section id="about" className="bg-neutral-950 text-white">
+      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-24 md:grid-cols-2">
         
         {/* Slider (animated) */}
         <FadeIn delay={0.05}>
@@ -22,15 +22,16 @@ export default function AboutArt() {
         {/* Text (animated) */}
         <FadeIn delay={0.12}>
           <div className="md:order-1">
-            <div className="text-xs tracking-[0.3em] text-amber-400">
+            <div className="text-[11px] tracking-[0.4em] text-amber-400/90">
               ABOUT US
             </div>
 
-            <h2 className="mt-4 text-4xl font-semibold md:text-5xl">
+            <h2 className="mt-5 text-4xl font-semibold md:text-6xl">
+
               The Art of Lighting
             </h2>
 
-            <p className="mt-4 text-white/70">
+            <p className="mt-4 text-white/65">
               Get a lighting solution that suits your needs.
             </p>
 
@@ -38,13 +39,13 @@ export default function AboutArt() {
               A Curated Collection of Timeless & Modern Lighting
             </h3>
 
-            <p className="mt-4 leading-relaxed text-white/70">
+            <p className="mt-4 leading-relaxed text-white/65">
               At Kulminant Lighting, our passion is discovering exceptional
               lighting fixtures from around the globe. We believe the right light
               can transform a space and elevate everyday living.
             </p>
 
-            <p className="mt-4 leading-relaxed text-white/70">
+            <p className="mt-4 leading-relaxed text-white/65">
               Every piece is selected for quality, craftsmanship, and design—
               so you can choose with confidence.
             </p>
