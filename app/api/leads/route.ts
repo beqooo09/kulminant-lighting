@@ -1,78 +1,87 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!;
+const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Simple in-memory rate limit (good for dev; for production we can upgrade later)
+const hits = new Map<string, { count: number; resetAt: number }>();
+const WINDOW_MS = 60_000; // 1 min
+const MAX_REQ = 10; // per minute
 
-type LeadPayload = {
-  name: string;
-  email: string;
-  phone?: string;
-  message: string;
-  source?: string;
-};
-
-function badRequest(message: string) {
-  return NextResponse.json({ ok: false, error: message }, { status: 400 });
+function getIP(req: Request) {
+  // Vercel / proxies commonly set this
+  const fwd = req.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0].trim();
+  return "unknown";
 }
 
 export async function POST(req: Request) {
   try {
-    const body = (await req.json()) as Partial<LeadPayload>;
-
-    const name = (body.name ?? "").trim();
-    const email = (body.email ?? "").trim();
-    const phone = (body.phone ?? "").trim();
-    const message = (body.message ?? "").trim();
-    const source = (body.source ?? "website").trim();
-
-    if (!name) return badRequest("Name is required.");
-    if (!email) return badRequest("Email is required.");
-    if (!message) return badRequest("Message is required.");
-
-    // 1) Save to Supabase
-    const { error: dbError } = await supabase.from("leads").insert([
-      { name, email, phone: phone || null, message, source },
-    ]);
-
-    if (dbError) {
-      console.error("Supabase insert error:", dbError);
-      return NextResponse.json({ ok: false, error: "Database insert failed." }, { status: 500 });
+    if (!supabaseUrl || !serviceKey) {
+      return NextResponse.json(
+        { error: "Server env missing Supabase keys." },
+        { status: 500 }
+      );
     }
 
-    // 2) Send email notification
-    const to = process.env.LEADS_NOTIFY_TO_EMAIL!;
-    const from = process.env.LEADS_FROM_EMAIL || "Kulminant <onboarding@resend.dev>";
+    const ip = getIP(req);
+    const now = Date.now();
 
-    if (!process.env.RESEND_API_KEY) {
-      return NextResponse.json({ ok: true, warning: "RESEND_API_KEY missing; saved lead only." });
+    // Rate limit
+    const entry = hits.get(ip);
+    if (!entry || entry.resetAt < now) {
+      hits.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+    } else {
+      entry.count += 1;
+      if (entry.count > MAX_REQ) {
+        return NextResponse.json(
+          { error: "Too many requests. Please try again later." },
+          { status: 429 }
+        );
+      }
     }
 
-    await resend.emails.send({
-      from,
-      to,
-      subject: `New Kulminant lead — ${name}`,
-      text: [
-        `New lead submitted:`,
-        ``,
-        `Name: ${name}`,
-        `Email: ${email}`,
-        `Phone: ${phone || "-"}`,
-        `Source: ${source}`,
-        ``,
-        `Message:`,
-        message,
-      ].join("\n"),
+    const body = await req.json();
+
+    // Honeypot: bots fill hidden field
+    if (body?.company && String(body.company).trim().length > 0) {
+      // pretend success to not teach bots
+      return NextResponse.json({ ok: true }, { status: 200 });
+    }
+
+    const name = String(body?.name || "").trim();
+    const email = String(body?.email || "").trim();
+    const phone = String(body?.phone || "").trim();
+    const message = String(body?.message || "").trim();
+    const source = String(body?.source || "website").trim();
+
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { error: "Missing required fields." },
+        { status: 400 }
+      );
+    }
+
+    const supabase = createClient(supabaseUrl, serviceKey);
+
+    const { error } = await supabase.from("leads").insert({
+      name,
+      email,
+      phone,
+      message,
+      source,
     });
 
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error("API error:", err);
-    return NextResponse.json({ ok: false, error: "Unexpected error." }, { status: 500 });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ ok: true }, { status: 200 });
+  } catch (e: any) {
+    return NextResponse.json(
+      { error: e?.message || "Server error" },
+      { status: 500 }
+    );
   }
 }

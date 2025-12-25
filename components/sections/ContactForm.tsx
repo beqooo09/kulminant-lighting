@@ -18,6 +18,7 @@ export default function ContactForm() {
 
     const payload = {
       name: String(formData.get("name") || "").trim(),
+      company: String(formData.get("company") || "").trim(),
       email: String(formData.get("email") || "").trim(),
       phone: String(formData.get("phone") || "").trim(),
       message: String(formData.get("message") || "").trim(),
@@ -68,6 +69,14 @@ export default function ContactForm() {
         placeholder="Phone (optional)"
         className="w-full rounded-md bg-white/5 border border-white/10 px-4 py-3 text-white"
       />
+
+      <input
+       name="company"
+       tabIndex={-1}
+       autoComplete="off"
+       className="hidden"
+      />
+
 
       <textarea
         name="message"
