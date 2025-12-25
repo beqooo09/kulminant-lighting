@@ -1,32 +1,48 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/utils/supabase/client";
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
+    setSuccess(false);
+    setErrorMsg(null);
 
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    const { error } = await supabase.from("leads").insert({
-      name: formData.get("name"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      message: formData.get("message"),
+    const payload = {
+      name: String(formData.get("name") || "").trim(),
+      email: String(formData.get("email") || "").trim(),
+      phone: String(formData.get("phone") || "").trim(),
+      message: String(formData.get("message") || "").trim(),
       source: "website",
-    });
+    };
 
-    setLoading(false);
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (!error) {
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to send.");
+      }
+
       setSuccess(true);
       form.reset();
+    } catch (err: any) {
+      setErrorMsg(err?.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -63,7 +79,7 @@ export default function ContactForm() {
 
       <button
         disabled={loading}
-        className="rounded-md bg-amber-600 px-6 py-3 font-semibold text-black hover:bg-amber-500"
+        className="rounded-md bg-amber-600 px-6 py-3 font-semibold text-black hover:bg-amber-500 disabled:opacity-60"
       >
         {loading ? "Sending…" : "Send request"}
       </button>
@@ -73,6 +89,8 @@ export default function ContactForm() {
           Thank you — we’ll contact you shortly.
         </p>
       )}
+
+      {errorMsg && <p className="text-sm text-red-300">{errorMsg}</p>}
     </form>
   );
 }
