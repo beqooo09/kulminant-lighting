@@ -42,11 +42,12 @@ export default function Hero() {
 
             {/* Future: partners */}
             <Link
-              href="/login"
-              className="rounded-md border border-white/25 px-3 py-2 text-xs font-semibold text-white hover:border-white/50"
-            >
-              Architects / Partners
+            href="/signup"
+            className="rounded-md border border-white/25 px-3 py-2 text-xs font-semibold text-white hover:border-white/50"
+          >
+            Request Access
             </Link>
+
           </nav>
         </header>
 
