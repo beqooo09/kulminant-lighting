@@ -1,3 +1,4 @@
+import FadeIn from "@/components/FadeIn";
 import Link from "next/link";
 
 export default function Hero() {
@@ -51,34 +52,40 @@ export default function Hero() {
 
         {/* Content */}
         <div className="mt-20 max-w-xl">
-          <div className="text-xs tracking-[0.35em] text-amber-300/90">
-            WELCOME TO
-          </div>
+          <FadeIn delay={0.05}>
+            <div className="text-xs tracking-[0.35em] text-amber-300/90">
+              WELCOME TO
+            </div>
 
-          <h1 className="mt-4 text-4xl font-semibold text-white md:text-6xl">
-            Kulminant Lighting
-          </h1>
+            <h1 className="mt-4 text-4xl font-semibold text-white md:text-6xl">
+              Kulminant Lighting
+            </h1>
+          </FadeIn>
 
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-white/70">
-            A curated collection of timeless & modern lighting. Browse our
-            collections or request a quote for your project.
-          </p>
+          <FadeIn delay={0.15}>
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-white/70">
+              A curated collection of timeless & modern lighting. Browse our
+              collections or request a quote for your project.
+            </p>
+          </FadeIn>
 
-          <div className="mt-10 flex flex-wrap gap-3">
-            <a
-              href="#collections"
-              className="rounded-md bg-amber-600 px-6 py-3 text-sm font-semibold text-black hover:bg-amber-500"
-            >
-              Explore Collections
-            </a>
+          <FadeIn delay={0.25}>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <a
+                href="#collections"
+                className="rounded-md bg-amber-600 px-6 py-3 text-sm font-semibold text-black hover:bg-amber-500"
+              >
+                Explore Collections
+              </a>
 
-            <Link
-              href="/contact"
-              className="rounded-md border border-white/30 px-6 py-3 text-sm font-semibold text-white hover:border-white/60"
-            >
-              Request a Quote
-            </Link>
-          </div>
+              <Link
+                href="/contact"
+                className="rounded-md border border-white/30 px-6 py-3 text-sm font-semibold text-white hover:border-white/60"
+              >
+                Request a Quote
+              </Link>
+            </div>
+          </FadeIn>
         </div>
       </div>
     </section>
