@@ -11,7 +11,6 @@ export default function AboutArt() {
   return (
     <section id="about" className="bg-neutral-950 text-white">
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-24 md:grid-cols-2">
-        
         {/* Slider (animated) */}
         <FadeIn delay={0.05}>
           <div className="md:order-2">
@@ -27,31 +26,29 @@ export default function AboutArt() {
             </div>
 
             <h2 className="mt-5 text-4xl font-semibold md:text-6xl">
-
               The Art of Lighting
             </h2>
 
-            <p className="mt-4 text-white/65">
+            <p className="mt-6 text-white/65 leading-relaxed">
               Get a lighting solution that suits your needs.
             </p>
 
-            <h3 className="mt-8 text-xl font-medium text-white md:text-2xl">
+            <h3 className="mt-10 text-lg font-medium text-white/90 md:text-xl">
               A Curated Collection of Timeless & Modern Lighting
             </h3>
 
             <p className="mt-4 leading-relaxed text-white/65">
               At Kulminant Lighting, our passion is discovering exceptional
-              lighting fixtures from around the globe. We believe the right light
-              can transform a space and elevate everyday living.
+              lighting fixtures from around the globe. We believe the right
+              light can transform a space and elevate everyday living.
             </p>
 
             <p className="mt-4 leading-relaxed text-white/65">
-              Every piece is selected for quality, craftsmanship, and design—
-              so you can choose with confidence.
+              Every piece is selected for quality, craftsmanship, and design—so
+              you can choose with confidence.
             </p>
           </div>
         </FadeIn>
-
       </div>
     </section>
   );
