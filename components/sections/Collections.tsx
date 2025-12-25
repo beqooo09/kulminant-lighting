@@ -32,13 +32,15 @@ export default function Collections() {
         <FadeIn>
           <div className="flex items-end justify-between gap-6">
             <div>
-              <div className="text-xs tracking-[0.35em] text-amber-400">
+              <div className="text-[11px] tracking-[0.4em] text-amber-400/90">
                 COLLECTIONS
               </div>
-              <h2 className="mt-4 text-4xl font-semibold md:text-5xl">
+
+              <h2 className="mt-5 text-4xl font-semibold md:text-6xl">
                 Explore by category
               </h2>
-              <p className="mt-4 max-w-2xl text-white/70 leading-relaxed">
+
+              <p className="mt-6 max-w-2xl leading-relaxed text-white/65">
                 Curated categories designed for modern interiors and
                 professional projects.
               </p>
@@ -56,43 +58,42 @@ export default function Collections() {
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {collections.map((c, i) => (
             <FadeIn key={c.title} delay={0.06 + i * 0.06}>
-             <Link
-  href={c.href}
-  className="
-    group relative overflow-hidden rounded-2xl
-    border border-white/10 bg-white/5
-    transition-all duration-500 ease-out
-    hover:-translate-y-1 hover:border-white/20 hover:bg-white/10
-    hover:shadow-2xl hover:shadow-black/40
-  "
->
-  {/* Luxury highlight */}
-  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-    <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent" />
-  </div>
+              <Link
+                href={c.href}
+                className="
+                  group relative overflow-hidden rounded-2xl
+                  border border-white/10 bg-white/5
+                  transition-all duration-500 ease-out
+                  hover:-translate-y-1 hover:border-white/20 hover:bg-white/10
+                  hover:shadow-2xl hover:shadow-black/40
+                "
+              >
+                {/* Luxury highlight */}
+                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent" />
+                </div>
 
-  {/* Border glow */}
-  <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/0 transition duration-500 group-hover:ring-white/10" />
+                {/* Border glow */}
+                <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/0 transition duration-500 group-hover:ring-white/10" />
 
-  <div className="relative aspect-[4/5] w-full">
-    <Image
-      src={c.img}
-      alt={c.title}
-      fill
-      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
-      sizes="(max-width: 768px) 50vw, 25vw"
-    />
-    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-  </div>
+                <div className="relative aspect-[4/5] w-full">
+                  <Image
+                    src={c.img}
+                    alt={c.title}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                </div>
 
-  <div className="absolute bottom-0 left-0 right-0 p-4">
-    <div className="text-sm font-semibold">{c.title}</div>
-    <div className="mt-1 text-xs text-white/70">
-      Browse collection →
-    </div>
-  </div>
-</Link>
-
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="text-sm font-semibold">{c.title}</div>
+                  <div className="mt-1 text-xs text-white/70">
+                    Browse collection →
+                  </div>
+                </div>
+              </Link>
             </FadeIn>
           ))}
         </div>
